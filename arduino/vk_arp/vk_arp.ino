@@ -108,13 +108,15 @@ void loop() {
   tempo_pin_value = analogRead(tempo_pin);
   interval = tempo_pin_value;
 
-  displayNumber(tempo_pin_value);
+  displayNumber(interval);
   
-  if (timer0 > interval) {
-    timer0 -= interval; //reset the timer
+  if ((!arp_on) || (!pressed_keys) || (timer0 > interval)) {
 
     if (arp_on) {
+      timer0 -= interval; //reset the timer
       MIDI.sendNoteOff(cur_note, 0, 1);
+    } else {
+      timer0 = 0;
     }
 
     if (pressed_keys) {
